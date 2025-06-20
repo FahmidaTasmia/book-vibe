@@ -1,10 +1,12 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Book = ({ book }) => {
-  const { bookName, tags, author, category, image, rating } = book;
+  const {bookId, bookName, tags, author, category, image, rating } = book;
 
   return (
+    <Link to={`/books/${bookId}`}>
     <div className="bg-white rounded-xl shadow border border-gray-300 p-4">
       <img
         src={image}
@@ -36,6 +38,7 @@ const Book = ({ book }) => {
         </span>
       </div>
     </div>
+    </Link>
   );
 };
 
