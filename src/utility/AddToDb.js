@@ -1,24 +1,57 @@
-const getStoredReadList=()=>{
- const storedListStr = localStorage.getItem('readList');
- if(storedListStr){
-    const storedList = JSON.parse(storedListStr);
-     return storedList;
- }
- else{
-    return [];
- }
+import { toast } from "react-toastify";
+
+const getStoredReadList = () => {
+    // read-list
+    const storedListStr = localStorage.getItem('read-list');
+    if (storedListStr) {
+        const storedList = JSON.parse(storedListStr);
+        return storedList;
+    }
+    else {
+        return [];
+    }
 }
 
-const addToStoredReadList =(id)=>{
+const addToStoredReadList = (id) => {
     const storedList = getStoredReadList();
-    if(storedList.includes(id)){
-        alert('already exists in the read List');
+    if (storedList.includes(id)) {
+        // already exists. do not add it
+        toast.info(`${id} is already in the read list.`);
     }
-    else{
+    else {
         storedList.push(id);
         const storedListStr = JSON.stringify(storedList);
         localStorage.setItem('read-list', storedListStr);
-        alert(' This book is added to your Read List')    }
+        // trigger toast for successful addition
+        toast.success('This book has been added to your read list.');
+    }
 }
 
-export {addToStoredReadList};
+const getStoredWishList = () => {
+    // wish-list
+    const storedWishListStr = localStorage.getItem('wish-list');
+    if (storedWishListStr) {
+        const storedWishList = JSON.parse(storedWishListStr);
+        return storedWishList;
+    }
+    else {
+        return [];
+    }
+}
+
+const addToStoredWishList = (id) => {
+    const storedWishList = getStoredWishList();
+    if (storedWishList.includes(id)) {
+        // already exists. do not add it
+        toast.info(`${id} is already in the wish list.`);
+    }
+    else {
+        storedWishList.push(id);
+        const storedWishListStr = JSON.stringify(storedWishList);
+        localStorage.setItem('wish-list', storedWishListStr);
+        // trigger toast for successful addition
+        toast.success('This book has been added to your wish list.');
+    }
+}
+
+export { addToStoredReadList, addToStoredWishList, getStoredReadList };

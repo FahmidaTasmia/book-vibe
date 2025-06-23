@@ -35,7 +35,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/listed-books"
+          to="/readList"
           className="px-4 py-2 font-medium text-lg text-gray-700 hover:text-black transition-colors duration-300"
         >
           Listed Books
@@ -66,7 +66,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/listed-books"
+          to="/readList"
           className={getMobileNavLinkStyle}
           onClick={closeMenu}
         >
