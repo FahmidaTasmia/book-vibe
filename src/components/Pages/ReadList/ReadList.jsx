@@ -4,50 +4,84 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import "react-tabs/style/react-tabs.css";
 
-
-import { getStoredReadList } from "../../../utility/AddToDb";
+// Correctly import all the necessary functions
+import {getStoredReadList, getStoredWishList } from "../../../utility/AddToDb"; 
 import SingleBook from "../SingleBook/SingleBook";
+import WishList from "../WishList/WishList";
 
 const ReadList = () => {
-    // worst case 
-    const [readList, setReadList] = useState([])
-    const [sort, setSort] = useState("");
+  const [readList, setReadList] = useState([]);
+  const [addWishList, setWishList] = useState([]);
+  const [sort, setSort] = useState("");
+  const data = useLoaderData(); // Assuming 'data' is the list of books
 
-    const data = useLoaderData();
-    
+  // Fetch the read list and filter the books from the data based on the stored list
+  useEffect(() => {
+    if (!data || !Array.isArray(data)) return;
 
-    useEffect(() => {
-        const storedBookData = getStoredReadList();
-        const ConvertedStoredBooks = storedBookData.map(id => parseInt(id))
-        const myReadList = data.filter(book => ConvertedStoredBooks.includes(book.bookId));
-        setReadList(myReadList)
-    }, [])
-    
+    const storedBookData = getStoredReadList();
+    const convertedStoredBooks = storedBookData.map((id) => parseInt(id));
+    const myReadList = data.filter((book) =>
+      convertedStoredBooks.includes(book.bookId)
+    );
+    setReadList(myReadList);
+  }, [data]);
 
-    const handleSort = (type) => {
-        setSort(type)
-        if (type === "pages") {
-            const sortedByPage = [...readList].sort((a, b) => a.totalPages - b.totalPages);
-            setReadList(sortedByPage)
-            console.log(sortedByPage)
-        }
-        if (type === "ratings") {
-            const sortedByRating = [...readList].sort((a, b) => a.rating - b.rating);
-            setReadList(sortedByRating)
-        }
+  // Fetch the wish list and filter the books from the data based on the stored list
+  useEffect(() => {
+    if (!data || !Array.isArray(data)) return;
 
-}
+    const wishList = getStoredWishList(); // Correct function call
+    const convertedStoredWishList = wishList.map((id) => parseInt(id));
+    const myWishList = data.filter((book) =>
+      convertedStoredWishList.includes(book.bookId)
+    );
+    setWishList(myWishList);
+  }, [data]);
 
+  const handleSort = (type) => {
+    setSort(type);
+    let sortedList = [];
+    if (type === "pages") {
+      sortedList = [...readList].sort((a, b) => a.totalPages - b.totalPages);
+    }
+    if (type === "ratings") {
+      sortedList = [...readList].sort((a, b) => a.rating - b.rating);
+    }
+    setReadList(sortedList);
+  };
+
+  // Safely render Read List
+  const renderReadList = Array.isArray(readList) && readList.length > 0 ? (
+    readList.map((book) => (
+      <SingleBook key={book.bookId} book={book} />
+    ))
+  ) : (
+    <p>No books found in your read list.</p>
+  );
+
+  // Safely render Wish List
+  const renderWishList = Array.isArray(addWishList) && addWishList.length > 0 ? (
+    addWishList.map((book) => (
+      <WishList key={book.bookId} book={book} />
+    ))
+  ) : (
+    <p>No books found in your wish list.</p>
+  );
 
   return (
-      <div>
-          <details className="dropdown ">
-              <summary className="btn m-1">sort by : {sort?sort:""}</summary>
-  <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    <li><a onClick={()=>handleSort("pages")}>pages</a></li>
-    <li><a onClick={()=>handleSort("ratings")}>ratings</a></li>
-  </ul>
-</details>
+    <div>
+      <details className="dropdown">
+        <summary className="btn m-1">Sort by: {sort || "Select an option"}</summary>
+        <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <li>
+            <a onClick={() => handleSort("pages")}>Pages</a>
+          </li>
+          <li>
+            <a onClick={() => handleSort("ratings")}>Ratings</a>
+          </li>
+        </ul>
+      </details>
       <Tabs>
         <TabList>
           <Tab>Read Book List</Tab>
@@ -55,16 +89,10 @@ const ReadList = () => {
         </TabList>
 
         <TabPanel>
-                  
-
-                  <div className="grid gap-8 mt-6 ">
-                    {
-                      readList.map(book=><SingleBook key={book.bookId} book={book}></SingleBook>)
-                  }
-                  </div>
+          <div className="grid gap-8 mt-6">{renderReadList}</div>
         </TabPanel>
         <TabPanel>
-          <h2>My Wish List</h2>
+          <div>{renderWishList}</div>
         </TabPanel>
       </Tabs>
     </div>

@@ -1,9 +1,8 @@
-
 import { FiUsers } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineRestorePage } from "react-icons/md";
 
-const SingleBook = ({ book }) => {
+const WishList = ({ book }) => {
   const {
     bookName,
     tags,
@@ -88,4 +87,4 @@ const SingleBook = ({ book }) => {
   );
 };
 
-export default SingleBook;
+export default WishList;
