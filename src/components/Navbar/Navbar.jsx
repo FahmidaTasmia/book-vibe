@@ -43,10 +43,10 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/pages-to-read"
+          to="/dashboard"
           className="px-4 py-2 font-medium text-lg text-gray-700 hover:text-black transition-colors duration-300"
         >
-          Pages to Read
+          Pages To Read
         </NavLink>
       </li>
     </ul>
@@ -79,7 +79,7 @@ const Navbar = () => {
           className={getMobileNavLinkStyle}
           onClick={closeMenu}
         >
-          <span className="block px-4 py-3">Pages to Read</span>
+          <span className="block px-4 py-3">Pages To Read</span>
         </NavLink>
       </li>
     </ul>

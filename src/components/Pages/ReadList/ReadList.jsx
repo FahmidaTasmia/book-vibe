@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-
 import "react-tabs/style/react-tabs.css";
-
-// Correctly import all the necessary functions
 import {getStoredReadList, getStoredWishList } from "../../../utility/AddToDb"; 
 import SingleBook from "../SingleBook/SingleBook";
 import WishList from "../WishList/WishList";
@@ -13,7 +10,7 @@ const ReadList = () => {
   const [readList, setReadList] = useState([]);
   const [addWishList, setWishList] = useState([]);
   const [sort, setSort] = useState("");
-  const data = useLoaderData(); // Assuming 'data' is the list of books
+  const data = useLoaderData(); 
 
   // Fetch the read list and filter the books from the data based on the stored list
   useEffect(() => {
